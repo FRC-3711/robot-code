@@ -18,7 +18,7 @@ Shoot::Shoot()
 // Called just before this Command runs the first time
 void Shoot::Initialize()
 {
-	sensors->ShooterEncoderReset();
+	launcher->EncoderReset();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -26,13 +26,13 @@ void Shoot::Execute()
 {
 	DriverStationLCD *dsLCD = DriverStationLCD::GetInstance();
 
-	sensors->ShooterCheckZeroAndReset();
+	launcher->CheckZeroAndReset();
 	//Get sensor readings
 	float shooterSpeed;
 	shooterSpeed = oi->getShooterMotorSpeed();
 	dsLCD->Printf(DriverStationLCD::kUser_Line5, 1, "%1.4f", shooterSpeed);
 	double shooterAngle;
-	shooterAngle = sensors->ShooterGetAngle();
+	shooterAngle = launcher->GetAngle();
 //	SmartDashboard::PutNumber("Shooter Angle", shooterAngle);
 //	SmartDashboard::PutNumber("Shooter Speed", shooterSpeed);
 	dsLCD->Printf(DriverStationLCD::kUser_Line6, 1, "%1.4f", shooterAngle);

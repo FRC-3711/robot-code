@@ -17,13 +17,6 @@ Sensors::Sensors() : Subsystem("Sensors")
 	// Create a t
 	gyroTemp = new AnalogChannel(1, GYRO_TEMP_ANALOG_IN);
 	
-	
-	shooterEncoder = new Encoder(SHOOTER_ENCODER_CHA, SHOOTER_ENCODER_CHB, true);
-	shooterEncoder->SetDistancePerPulse(12.0 / 45.0 / 360.0); // 360 pulses per axle rotation; 45:12 reduction to arm
-	shooterEncoder->SetMinRate(1.0); //arbitrary; sets lowest threshold of pulses/s before encoder shows "stopped"
-	shooterEncoder->Start();
-	
-	photoEye = new DigitalInput(SHOOTER_PHOTOEYE);
 	distanceSensor = new AnalogChannel(DISTANCE_SENSOR_SLOT,DISTANCE_SENSOR_CHANNEL);
 }
 
@@ -67,46 +60,6 @@ float Sensors::GyroGetAngle(void)
 double Sensors::GyroGetRate(void)
 {
 	return gyro->GetRate();
-}
-
-void Sensors::ShooterEncoderStart()
-{
-	shooterEncoder->Start();
-}
-
-void Sensors::ShooterEncoderReset()
-{
-	shooterEncoder->Reset();
-}
-
-double Sensors::ShooterEncoderGetRate(void)
-{
-	return shooterEncoder->GetRate();
-}
-
-double Sensors::ShooterGetAngle(void)
-{
-	double shooterDistance = this->ShooterEncoderGetDistance();
-	double rawAngle = fmod(shooterDistance * 360, 360.0);
-	return rawAngle >= 0 ? rawAngle : 360 + rawAngle;
-}
-
-double Sensors::ShooterEncoderGetDistance(void)
-{
-	return shooterEncoder->GetDistance();
-}
-
-int32_t Sensors::ShooterEncoderGetRaw(void)
-{
-	return shooterEncoder->GetRaw();
-}
-
-void Sensors::ShooterCheckZeroAndReset(void)
-{
-	if (photoEye->Get() > 0)
-	{
-		this->ShooterEncoderReset();
-	}
 }
 
 float Sensors::DistanceSensorGetDistance(void)

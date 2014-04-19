@@ -2,13 +2,30 @@
 #include "../Robotmap.h"
 #include "../Commands/Shoot.h"
 
-WhipperSnapper::WhipperSnapper() : Subsystem("WhipperSnapper")
+WhipperSnapper::WhipperSnapper() : PIDSubsystem("WhipperSnapper", 1.0, 0.1, 0.0)
 {
 	// Actually two Talons and two 2.5" CIMs, but only one channel
 	shooter_motor_1 = new Talon(SHOOTER_MOTOR_1);
 	
 	// AndyMark gear motor
 	loader_motor = new Talon(LOADER_MOTOR);
+	
+	// Shooter encoder 
+	shooter_encoder = new Encoder360(SHOOTER_ENCODER_CHA, SHOOTER_ENCODER_CHB, true);
+	shooter_encoder->SetDistancePerPulse(12.0 / 45.0 / 360.0); // 360 pulses per axle rotation; 45:12 reduction to arm
+	shooter_encoder->SetMinRate(1.0); //arbitrary; sets lowest threshold of pulses/s before encoder shows "stopped"
+	shooter_encoder->Start();
+	shooter_photoeye = new DigitalInput(SHOOTER_PHOTOEYE);
+}
+
+double WhipperSnapper::ReturnPIDInput()
+{
+	this->GetAngle();
+}
+
+void WhipperSnapper::UsePIDInput(double input)
+{
+	this->SetMotorSpeed(input);
 }
 
 void WhipperSnapper::InitDefaultCommand()
@@ -48,3 +65,37 @@ void WhipperSnapper::StopLoader()
 {
 	loader_motor->Set(0.0);
 }
+
+void WhipperSnapper::EncoderStart()
+{
+	shooter_encoder->Start();
+}
+
+void WhipperSnapper::EncoderReset()
+{
+	shooter_encoder->Reset();
+}
+
+double WhipperSnapper::EncoderGetRate(void)
+{
+	return shooter_encoder->GetRate();
+}
+
+double WhipperSnapper::GetAngle(void)
+{
+	return shooter_encoder->GetAngle();
+}
+
+double WhipperSnapper::EncoderGetDistance(void)
+{
+	return shooter_encoder->GetDistance();
+}
+
+void WhipperSnapper::CheckZeroAndReset(void)
+{
+	if (shooter_photoeye->Get() > 0)
+	{
+		this->EncoderReset();
+	}
+}
+

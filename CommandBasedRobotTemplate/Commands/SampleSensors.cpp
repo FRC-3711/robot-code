@@ -29,7 +29,6 @@ void SampleSensors::Initialize()
 {
 	// Initialize the gyro
 	sensors->GyroReset();
-	sensors->ShooterEncoderReset();
 }
 
 // Called just before this Command runs the first time
@@ -63,10 +62,6 @@ void SampleSensors::Execute()
 	//dsLCD->Printf(DriverStationLCD::kUser_Line6, 1, "D Low: %1.1f in      ", dLow);
 	//dsLCD->Printf(DriverStationLCD::kUser_Line5, 1, "Rate: %1.1f deg/sec   ", GyroRate);
 	
-	EncoderDistance = sensors->ShooterEncoderGetDistance();
-	EncoderRate = sensors->ShooterEncoderGetRate();
-	ShooterAngle = fmod((EncoderDistance * 360), 360);
-		
 	// Update the Driver Station LCD with the new data aquired from this loop iteration
 	dsLCD->UpdateLCD();
 }

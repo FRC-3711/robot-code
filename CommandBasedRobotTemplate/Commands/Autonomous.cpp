@@ -62,8 +62,8 @@ void Autonomous::Execute()
 	// If distance to the goal = the desired distance, if not move forward/back accordingly
 	// if the facing goal is hot, shoot
 	// if not wait 5 seconds, then shoot
-	sensors->ShooterCheckZeroAndReset();
-	float CUR_ANGLE = sensors->ShooterGetAngle();
+	launcher->CheckZeroAndReset();
+	float CUR_ANGLE = launcher->GetAngle();
 	dsLCD->Printf(DriverStationLCD::kUser_Line1, 1, "STEP=%d                 ", STEP);
 	dsLCD->Printf(DriverStationLCD::kUser_Line2, 1, "CUR_ANGLE=%1.1f         ", CUR_ANGLE);
 	dsLCD->Printf(DriverStationLCD::kUser_Line3, 1, "DESIRED_ANGLE=%1.1f     ", DesiredAngle);

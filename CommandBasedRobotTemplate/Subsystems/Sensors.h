@@ -12,8 +12,6 @@ private:
 	ADXL345_I2C *accelerometer;
 	Gyro *gyro;
 	AnalogChannel *gyroTemp;
-	Encoder *shooterEncoder;
-	DigitalInput *photoEye;
 	AnalogChannel *distanceSensor;
 	
 public:
@@ -25,13 +23,6 @@ public:
 	void Sensors::GyroReset(void);
 	float Sensors::GyroGetAngle(void);
 	double Sensors::GyroGetRate(void);
-	void Sensors::ShooterEncoderStart(void);
-	void Sensors::ShooterEncoderReset(void);
-	double Sensors::ShooterEncoderGetRate(void);
-	double Sensors::ShooterEncoderGetDistance(void);
-	double Sensors::ShooterGetAngle(void);
-	int32_t Sensors::ShooterEncoderGetRaw(void);
-	void Sensors::ShooterCheckZeroAndReset(void);
 	float Sensors::DistanceSensorGetDistance(void);
 };
 
