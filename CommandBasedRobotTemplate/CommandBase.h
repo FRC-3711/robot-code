@@ -4,7 +4,6 @@
 #include "Commands/Command.h"
 #include "Subsystems/Chassis.h"
 #include "Subsystems/WhipperSnapper.h"
-#include "Subsystems/Time.h"
 #include "Subsystems/Sensors.h"
 #include "OI.h"
 
@@ -25,7 +24,6 @@ public:
 	static OI *oi;
 	static Chassis *chassis;
 	static WhipperSnapper *launcher;
-	static Time *robot_timer;
 	static Sensors *sensors;
 };
 #endif
