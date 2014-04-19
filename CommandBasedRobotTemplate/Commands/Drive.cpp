@@ -21,20 +21,15 @@ void Drive::Execute()
 	float StickZ;	// Joystick Z axis (used for rotation)
 	float Heading;	// Gyro heading
 	
-	// Gets a pointer to the LCD instance
-	DriverStationLCD *dsLCD = DriverStationLCD::GetInstance();
-	
-	// Get current stick positions and calculated gyro heading
+	// Get current stick positions on three axes
 	StickX = oi->getDriveStrafeStick();
 	StickY = oi->getDriveFwdStick();
 	StickZ = oi->getDriveRotationStick();
 	
-	// Add expo to the X and Y axes
+	// Add expo to the X and Y axes. Z on the Logitech turns out to hypersensitive so *0.5
 	StickX = pow(StickX, 3);
 	StickY = pow(StickY, 3);
 	StickZ = pow(StickZ, 9) * 0.5;
-	
-	dsLCD->UpdateLCD();
 	
 	// Pass the stick and sensor data to the mecanum function of the RobotDrive class
 	if (StickX != 0.0 || StickY != 0.0 && StickZ != 0.0) {

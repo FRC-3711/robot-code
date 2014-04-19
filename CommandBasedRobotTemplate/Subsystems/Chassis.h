@@ -17,8 +17,6 @@ public:
 	Chassis();
 	void InitDefaultCommand();
 	void mecanumDrive(float x, float y, float z, float headingAngle);
-//	void tankDrive(double left, double right);
-//	void arcadeDrive(Joystick *stick);
 };
 
 #endif

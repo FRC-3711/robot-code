@@ -9,7 +9,7 @@ Sensors::Sensors() : Subsystem("Sensors")
 	// Create an instance of each sensor classs
 	
 	// Create an accelerometer class on the I2C bus of module 1, using a acceleration range of +/- 2G
-	accelerometer = new ADXL345_I2C(ACCEL_MODULE, ADXL345_I2C::kRange_2G);	
+	accelerometer = new ADXL345_I2C(ACCEL_MODULE, ADXL345_I2C::kRange_2G);
 	
 	// Create a gyro class for the Analog Devices ADW22307 gyro (2012 kit of parts)
 	gyro = new Gyro(1, GYRO_ANALOG_IN);
@@ -17,12 +17,11 @@ Sensors::Sensors() : Subsystem("Sensors")
 	// Create a t
 	gyroTemp = new AnalogChannel(1, GYRO_TEMP_ANALOG_IN);
 	
+	
 	shooterEncoder = new Encoder(SHOOTER_ENCODER_CHA, SHOOTER_ENCODER_CHB, true);
 	shooterEncoder->SetDistancePerPulse(12.0 / 45.0 / 360.0); // 360 pulses per axle rotation; 45:12 reduction to arm
 	shooterEncoder->SetMinRate(1.0); //arbitrary; sets lowest threshold of pulses/s before encoder shows "stopped"
 	shooterEncoder->Start();
-	
-	
 	
 	photoEye = new DigitalInput(SHOOTER_PHOTOEYE);
 	distanceSensor = new AnalogChannel(DISTANCE_SENSOR_SLOT,DISTANCE_SENSOR_CHANNEL);
@@ -110,7 +109,8 @@ void Sensors::ShooterCheckZeroAndReset(void)
 	}
 }
 
-float Sensors::DistanceSensorGetDistance(void){
-	return distanceSensor->GetVoltage() * DISTANCE_SENSOR_SENSITIVITY;
+float Sensors::DistanceSensorGetDistance(void)
+{
 	//outputs inches (Hopefully)
+	return distanceSensor->GetVoltage() * DISTANCE_SENSOR_SENSITIVITY;
 }

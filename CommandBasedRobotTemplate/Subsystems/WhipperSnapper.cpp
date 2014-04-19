@@ -2,12 +2,12 @@
 #include "../Robotmap.h"
 #include "../Commands/Shoot.h"
 
-// Constructor for the WhipperSnapper Class
 WhipperSnapper::WhipperSnapper() : Subsystem("WhipperSnapper")
 {
-	// Create an instance of the Talon class to control the shooter motor
+	// Actually two Talons and two 2.5" CIMs, but only one channel
 	shooter_motor_1 = new Talon(SHOOTER_MOTOR_1);
 	
+	// AndyMark gear motor
 	loader_motor = new Talon(LOADER_MOTOR);
 }
 
@@ -31,16 +31,19 @@ void WhipperSnapper::SetMotorSpeed(float speed)
 	shooter_motor_1->Set(speed);
 }
 
+// Loader normally spins toward inside of robot
 void WhipperSnapper::StartLoader()
 {
 	loader_motor->Set(1.0);
 }
 
+// Allows loader to be run in reverse to dump ball quickly from robot
 void WhipperSnapper::ReverseLoader()
 {
 	loader_motor->Set(-1.0);
 }
 
+// Stops loader; convenience/readability method
 void WhipperSnapper::StopLoader()
 {
 	loader_motor->Set(0.0);

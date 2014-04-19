@@ -8,7 +8,6 @@ class WhipperSnapper: public Subsystem
 
 private:
 	Talon *shooter_motor_1;
-	Talon *shooter_motor_2;
 	Talon *loader_motor;
 
 public:
