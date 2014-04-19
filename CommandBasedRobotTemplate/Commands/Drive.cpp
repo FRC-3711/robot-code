@@ -6,7 +6,6 @@ static bool Driving = false;
 Drive::Drive() {
 	// Use requires() here to declare subsystem dependencies
 	Requires(chassis);
-	Autonomous = false;
 }
 
 // Called just before this Command runs the first time
@@ -57,7 +56,6 @@ bool Drive::IsFinished() {
 
 // Called once after isFinished returns true
 void Drive::End() {
-	
 }
 
 // Called when another command which requires one or more of the same

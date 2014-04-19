@@ -9,15 +9,15 @@
 #include "SampleSensors.h"
 #include <math.h>
 
-static float 	AccelerationX 	= 0.0f;
-static float 	AccelerationY 	= 0.0f;
-static float 	AccelerationZ 	= 0.0f;
-static float 	GyroAngle 		= 0.0f;
-static float 	GyroRate 		= 0.0f;
-static double 	EncoderRate		= 0.4f;
-static double	EncoderDistance	= 0.4f;
-static double	ShooterAngle 	= 0.1f;
-static float	Distance;
+static float 	AccelerationX 	= 0.0;
+static float 	AccelerationY 	= 0.0;
+static float 	AccelerationZ 	= 0.0;
+static float 	GyroAngle 		= 0.0;
+static float 	GyroRate 		= 0.0;
+static double 	EncoderRate		= 0.0;
+static double	EncoderDistance	= 0.0;
+static double	ShooterAngle 	= 0.0;
+
 SampleSensors::SampleSensors()
 {
 	// Declare dependancy on the sensor class
@@ -61,7 +61,7 @@ void SampleSensors::Execute()
 	
 	//if ((Distance < dLow) || (Distance == 0)){dLow=Distance;}
 	//dsLCD->Printf(DriverStationLCD::kUser_Line6, 1, "D Low: %1.1f in      ", dLow);
-	//sLCD->Printf(DriverStationLCD::kUser_Line5, 1, "Rate: %1.1f deg/sec   ", GyroRate);
+	//dsLCD->Printf(DriverStationLCD::kUser_Line5, 1, "Rate: %1.1f deg/sec   ", GyroRate);
 	
 	EncoderDistance = sensors->ShooterEncoderGetDistance();
 	EncoderRate = sensors->ShooterEncoderGetRate();
@@ -71,7 +71,6 @@ void SampleSensors::Execute()
 	dsLCD->UpdateLCD();
 }
 
-
 // Make this return true when this Command no longer needs to run execute()
 bool SampleSensors::IsFinished() {
 	return false;
@@ -79,7 +78,6 @@ bool SampleSensors::IsFinished() {
 
 // Called once after isFinished returns true
 void SampleSensors::End() {
-	
 }
 
 // Called when another command which requires one or more of the same
