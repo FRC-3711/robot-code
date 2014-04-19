@@ -31,7 +31,7 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-WS_ROOT_DIR := C:/Workspace
+WS_ROOT_DIR := C:/FRC-3711/robot-code
 PRJ_ROOT_DIR := $(WS_ROOT_DIR)/CommandBasedRobotTemplate
 
 
