@@ -17,7 +17,6 @@ static float 	GyroRate 		= 0.0f;
 static double 	EncoderRate		= 0.4f;
 static double	EncoderDistance	= 0.4f;
 static double	ShooterAngle 	= 0.1f;
-static float	Distance;
 SampleSensors::SampleSensors()
 {
 	// Declare dependancy on the sensor class
