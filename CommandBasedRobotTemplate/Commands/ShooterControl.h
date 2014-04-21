@@ -1,17 +1,16 @@
-#ifndef SHOOT_H
-#define SHOOT_H
+#ifndef SHOOTERCONTROL_H
+#define SHOOTERCONTROL_H
 
 #include "../CommandBase.h"
 
-class Shoot: public CommandBase {
+class ShooterControl: public CommandBase {
 public:
-	Shoot();
+	ShooterControl();
 	virtual void Initialize();
 	virtual void Execute();
 	virtual bool IsFinished();
 	virtual void End();
 	virtual void Interrupted();
-	bool Autonomous;
 private:
 	void CalibrateShooterTalons();
 	void ReturnToAngle(double currentAngle, bool forwardOnly);

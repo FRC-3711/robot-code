@@ -1,16 +1,25 @@
 #include "OI.h"
 #include "Robotmap.h"
-//#include "Commands/"
+#include "Commands/Fire.h"
+#include "Commands/AngleControl.h"
 
 OI::OI()
 {
 	// Process operator interface input here.
 	
-	// Create an instance of the Joystick class for the Dual (driver) Joystick PORT 1
+	// Create new Joystick instances for all joysticks. These must be declared in the header.
+	// 2014 robot uses driver (Logitech Extreme 3D) and shooter (Logitech Attack 3)
 	driver_stick = new Joystick(DRIVE_STICK_PORT);
-	
-	// Create an instance of the Joystick class for the ATK3 (shooter) Joystick PORT 2
 	shooter_stick = new Joystick(SHOOTER_STICK_PORT);
+	
+	// Map buttons that will fire atomic commands. These must be declared in the header.
+	shooter_trigger = new JoystickButton(shooter_stick, SHOOTER_TRIGGER);
+	// Bind commands to button events
+	shooter_trigger->WhenActive(new AngleControl(340.0));
+	shooter_trigger->WhenReleased(new Fire());
+	
+	shooter_zero = new JoystickButton(shooter_stick, SHOOTER_ZERO_BUTTON);
+	shooter_zero->WhenActive(new AngleControl(0.0));
 }
 
 Joystick * OI::getJoystick()

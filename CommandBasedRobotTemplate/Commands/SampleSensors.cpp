@@ -7,16 +7,12 @@
 // Shaft encoders
 
 #include "SampleSensors.h"
-#include <math.h>
 
 static float 	AccelerationX 	= 0.0;
 static float 	AccelerationY 	= 0.0;
 static float 	AccelerationZ 	= 0.0;
 static float 	GyroAngle 		= 0.0;
 static float 	GyroRate 		= 0.0;
-static double 	EncoderRate		= 0.0;
-static double	EncoderDistance	= 0.0;
-static double	ShooterAngle 	= 0.0;
 
 SampleSensors::SampleSensors()
 {

@@ -2,7 +2,7 @@
 #include "Commands/Command.h"
 #include "Commands/Autonomous.h"
 #include "Commands/Drive.h"
-#include "Commands/Shoot.h"
+#include "Commands/ShooterControl.h"
 #include "Commands/SampleSensors.h"
 #include "CommandBase.h"
 #include "Robotmap.h"
@@ -15,7 +15,7 @@ public:
 private:
 	Autonomous *autonomousCommand;
 	Drive *driveCommand;
-	Shoot *shootCommand;
+	ShooterControl *shootCommand;
 	SampleSensors *sampleSensors;
 	LiveWindow *lw;
 
@@ -26,7 +26,7 @@ private:
 		// Create an instance of the Compressor to feed frisbees into the motor
 		autonomousCommand = new Autonomous();
 		driveCommand = new Drive();
-		shootCommand = new Shoot();
+		shootCommand = new ShooterControl();
 		sampleSensors = new SampleSensors();
 		lw = LiveWindow::GetInstance();
 		

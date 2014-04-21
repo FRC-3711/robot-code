@@ -1,8 +1,6 @@
 #include "Autonomous.h"
 #include "WPILib.h"
-#include "Vision/RGBImage.h"
-#include "Vision/BinaryImage.h"
-#include "Shoot.h"
+#include "ShooterControl.h"
 #include "Drive.h"
 #include <math.h>
 

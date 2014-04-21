@@ -24,7 +24,6 @@ public:
 	void EncoderStart(void);
 	void EncoderReset(void);
 	double EncoderGetRate(void);
-	double EncoderGetDistance(void);
 	double GetAngle(void);
 	double ReturnPIDInput(void);
 	void UsePIDOutput(double);

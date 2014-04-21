@@ -1,48 +1,38 @@
-#include "Shoot.h"
+#include "ShooterControl.h"
 #include <math.h>
 
-//the amount of time to run the firing motors in number * 20ms
-#define MOTOR_TIME_ON 15
-static bool Shooting = false;
 static bool Adjusting = false;
 static bool AngleControl = false;
 static double DesiredAngle = 0.0;
-static int MotorTimer = 0;
 
-Shoot::Shoot()
+ShooterControl::ShooterControl()
 {
 	// Use requires() here to declare subsystem dependencies
 	Requires(launcher);
 }
 
 // Called just before this Command runs the first time
-void Shoot::Initialize()
+void ShooterControl::Initialize()
 {
-	launcher->EncoderReset();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void Shoot::Execute()
+void ShooterControl::Execute()
 {
 	DriverStationLCD *dsLCD = DriverStationLCD::GetInstance();
 
 	launcher->CheckZeroAndReset();
 	//Get sensor readings
-	float shooterSpeed;
-	shooterSpeed = oi->getShooterMotorSpeed();
-	dsLCD->Printf(DriverStationLCD::kUser_Line5, 1, "%1.4f", shooterSpeed);
 	double shooterAngle;
 	shooterAngle = launcher->GetAngle();
-//	SmartDashboard::PutNumber("Shooter Angle", shooterAngle);
-//	SmartDashboard::PutNumber("Shooter Speed", shooterSpeed);
 	dsLCD->Printf(DriverStationLCD::kUser_Line6, 1, "%1.4f", shooterAngle);
-		
+	
 	//User inputs
 	if (oi->checkShooterCalibrateEnable())
 	{
 		CalibrateShooterTalons();
 	}
-		
+	
 	if (oi->checkLoaderLoadButton())
 	{
 		dsLCD->Printf(DriverStationLCD::kUser_Line2, 1, "Loader On     ");
@@ -63,36 +53,26 @@ void Shoot::Execute()
 	dsLCD->Printf(DriverStationLCD::kUser_Line1, 1, "%1.4f", shooterMove);
 	this->AdjustShooter(shooterMove);
 	
-	if (oi->checkShooterTrigger())
-	{
-		Shooting = true;
-		MotorTimer = MOTOR_TIME_ON;
-	}
-	if (Shooting)
-	{
-		this->Fire(shooterSpeed);
-	}
-	
 	// Update the LCD incase anything changed
 	dsLCD->UpdateLCD();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool Shoot::IsFinished() {
+bool ShooterControl::IsFinished() {
 	return false;
 }
 
 // Called once after isFinished returns true
-void Shoot::End() {
+void ShooterControl::End() {
 	
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void Shoot::Interrupted() {
+void ShooterControl::Interrupted() {
 }
 
-void Shoot::CalibrateShooterTalons()
+void ShooterControl::CalibrateShooterTalons()
 {
 	if (oi->checkShooterCalibrateForward())
 	{
@@ -105,7 +85,7 @@ void Shoot::CalibrateShooterTalons()
 	else (launcher->MotorOff());
 }
 
-void Shoot::ReturnToAngle(double currentAngle, bool forwardOnly){
+void ShooterControl::ReturnToAngle(double currentAngle, bool forwardOnly){
 	double error = DesiredAngle - currentAngle;
 	double errorFactor;
 	if (error >= 5.0 || error <= -5.0)
@@ -141,7 +121,7 @@ void Shoot::ReturnToAngle(double currentAngle, bool forwardOnly){
 	}
 }
 
-void Shoot::AdjustShooter(float shooterMove)
+void ShooterControl::AdjustShooter(float shooterMove)
 {
 	if ((shooterMove > 0.1) || (shooterMove < -0.1))
 	{
@@ -152,19 +132,5 @@ void Shoot::AdjustShooter(float shooterMove)
 	{
 		launcher->MotorOff();
 		Adjusting = false;
-	}
-}
-
-void Shoot::Fire(float shooterSpeed)
-{
-	if (MotorTimer > 0)
-	{
-		launcher->SetMotorSpeed(shooterSpeed);
-		MotorTimer--;
-	}
-	else if (MotorTimer <= 0)
-	{
-		launcher->MotorOff();
-		Shooting = false;
 	}
 }

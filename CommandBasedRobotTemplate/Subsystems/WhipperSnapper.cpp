@@ -1,16 +1,20 @@
 #include "WhipperSnapper.h"
 #include "../Robotmap.h"
-#include "../Commands/Shoot.h"
+#include "../Commands/ShooterControl.h"
 
-WhipperSnapper::WhipperSnapper() : PIDSubsystem("WhipperSnapper", 1.0, 0.1, 0.0)
+WhipperSnapper::WhipperSnapper() : PIDSubsystem("WhipperSnapper", 1.0, 0.01, 0.0)
 {
+	// Configure the PID controller to always take the shortest route even if it involves passing through 0
+	GetPIDController()->SetContinuous(true);
+	this->SetAbsoluteTolerance(1.0);
+	
 	// Actually two Talons and two 2.5" CIMs, but only one channel
 	shooter_motor_1 = new Talon(SHOOTER_MOTOR_1);
 	
 	// AndyMark gear motor
 	loader_motor = new Talon(LOADER_MOTOR);
 	
-	// Shooter encoder 
+	// Shooter encoder
 	shooter_encoder = new Encoder360(SHOOTER_ENCODER_CHA, SHOOTER_ENCODER_CHB, true);
 	shooter_encoder->SetDistancePerPulse(12.0 / 45.0 / 360.0); // 360 pulses per axle rotation; 45:12 reduction to arm
 	shooter_encoder->SetMinRate(1.0); //arbitrary; sets lowest threshold of pulses/s before encoder shows "stopped"
@@ -18,20 +22,21 @@ WhipperSnapper::WhipperSnapper() : PIDSubsystem("WhipperSnapper", 1.0, 0.1, 0.0)
 	shooter_photoeye = new DigitalInput(SHOOTER_PHOTOEYE);
 }
 
-double WhipperSnapper::ReturnPIDInput()
-{
-	this->GetAngle();
-}
-
-void WhipperSnapper::UsePIDInput(double input)
-{
-	this->SetMotorSpeed(input);
-}
-
 void WhipperSnapper::InitDefaultCommand()
 {
 	// Set the default command Class for a subsystem here.
-	SetDefaultCommand(new Shoot());
+	// This command will run whenever the subsystem is idle; i.e. when no other commands are running that require it.
+	SetDefaultCommand(new ShooterControl());
+}
+
+double WhipperSnapper::ReturnPIDInput()
+{
+	return this->GetAngle();
+}
+
+void WhipperSnapper::UsePIDOutput(double input)
+{
+	this->SetMotorSpeed(input);
 }
 
 // Turn off the Shooter motor
@@ -66,11 +71,13 @@ void WhipperSnapper::StopLoader()
 	loader_motor->Set(0.0);
 }
 
+// Must be called on robot startup so encoder starts tracking. Will initialize to 0.
 void WhipperSnapper::EncoderStart()
 {
 	shooter_encoder->Start();
 }
 
+// Reset encoder to 0
 void WhipperSnapper::EncoderReset()
 {
 	shooter_encoder->Reset();
@@ -84,11 +91,6 @@ double WhipperSnapper::EncoderGetRate(void)
 double WhipperSnapper::GetAngle(void)
 {
 	return shooter_encoder->GetAngle();
-}
-
-double WhipperSnapper::EncoderGetDistance(void)
-{
-	return shooter_encoder->GetDistance();
 }
 
 void WhipperSnapper::CheckZeroAndReset(void)
